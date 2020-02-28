@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MySql.Data.MySqlClient;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -51,18 +52,43 @@ namespace HelperTxt
                             for (int i = 0; i < qtdLinhas; i++)
                             {
                                 //Console.WriteLine(sr.ReadLine());
-                              
 
                                 dadosTxt[i] = sr.ReadLine();
 
-                                
 
                             }
 
-                            for(int i = 0; i < dadosTxt.Length; i++)
+                            MySqlConnection mConn = new MySqlConnection("Persist Security Info=False;server=localhost;database=MBR;uid=root;pwd=root");
+                           
+
+                            string comando = "";
+
+                            for (int i = 0; i < dadosTxt.Length; i++)
                             {
+
+                                try
+                                {
+                                    mConn.Open();
+                                    comando = $"insert into txt_gct values ('{dadosTxt[i]}')";
+                                    MySqlCommand cmd = new MySqlCommand();
+                                    cmd.Connection = mConn;
+                                    cmd.CommandText = comando;
+                                    cmd.ExecuteNonQuery();
+                                    mConn.Close();
+
+                                }
+                                catch(Exception ex)
+                                {
+
+                                }
+
+
+                                //MessageBox.Show(dadosTxt[i]);
+
                              
-                                MessageBox.Show(dadosTxt[i]);
+
+
+
                             }
                         
                         }
